@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<title>WAVEPURIFIER: Purify the Audio Adversarial Examples Using Hierarchical Diffusion Models </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="style_examples.css">
+
+</head>
+<body>
+
+	
+	
+	
+
+
+	<div class="container">
+		<center>
+		<h1>WAVEPURIFIER: Purify the Audio Adversarial Examples Using Hierarchical Diffusion Models </h1>
+		<div style="border: 1px solid black; margin-top: 20px; margin-bottom: 10px;"></div>
+		<p>We present audio examples for our purification output in three attacks. We compare the result with existing defense methods, and present the transcriptions on ASR (Aotomated Speech Recognition) models.
+			
+		<div style="border-top: 1px solid grey;"></div>
+		<div class="row">
+			<center>
+			<h3>C&W Attack</h3>
+			</center>
+			<p>ASR model: DeepSpeech 0.4.1</p>
+			<table class="table" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>Benign</th>
+						<th>C&W AE</th>
+						<th>Down-Up</th>
+						<th>LPC</th>
+						<th>Quant</th>
+						<th>ANR</th>
+						<th>SNR</th>
+						<th>Ours</th>
+					</tr>
+				</thead>
+				<tbody id = "imitation_tbody" >
+					
+				</tbody>
+			</table>
+
+		</div>
+
+		<div style="border-top: 1px solid grey;"></div>
+		<div class="row">
+			<center>
+			<h3>Style Transfer Task</h3>
+			</center>
+			<p>The goal of this task is to transfer the pitch and rhythm from some expressive speech to the cloned speech for the target speaker. For this task, we use examples from the single speaker Blizzard 2013 dataset as style references. This dataset contains expressive audio book readings from a single speaker with high variation in emotion and pitch. For our proposed model, we use this <i>style reference audio</i> to extract the pitch and rhythm. In-order to retain speaker-specific latent style aspects, we use <i>target speaker samples</i> to extract the GST embedding. For the Tacotron2 + GST model, which does not have explicit pitch conditioning, we use the <i>style reference audio</i> for obtaining the GST embedding and the rhythm.</p>
+			<table class="table" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>Style Reference Audio</th>
+						<th>Target Speaker Audio</th>
+						<th>Proposed Model: Zero-shot</th>
+						<th>Proposed Model: Adaptation Whole</th>
+						<th>Proposed Model: Adaptation Decoder</th>
+						<th>Proposed Model: Tacotron2 + GST - Zero-shot (baseline)</th>
+					</tr>
+				</thead>
+				<tbody id = "style_trasnfer_tbody" >
+					
+				</tbody>
+			</table>
+
+		</div>
+
+		<div style="border-top: 1px solid grey;"></div>
+
+		<div class="row">
+			<center>
+			<h3>Text Task</h3>
+			</center>
+			<p>For cloning speech directly from text, we first synthesize speech for the given text using a single speaker TTS model - Tacotron 2 + WaveGlow. We then derive the pitch contour of the synthetic speech using the Yin algorithm and scale the pitch contour linearly to have the same mean pitch as that of the. For deriving rhythm, we use our proposed synthesis model as a forced aligner between the text and Tacotron2-synthesized speech. We use the <i>target speaker samples</i> for obtaining the GST embedding for both our proposed model and the baseline Tacotron2 + GST model.</p>
+			<table class="table" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>Target Speaker Audio</th>
+						<th>Text</th>
+						<th>Proposed Model: Zero-shot</th>
+						<th>Proposed Model: Adaptation Whole</th>
+						<th>Proposed Model: Adaptation Decoder</th>
+						<th>Proposed Model: Tacotron2 + GST - Zero-shot (baseline)</th>
+
+					</tr>
+				</thead>
+				<tbody id = "text_tbody" >
+					
+				</tbody>
+			</table>
+
+		</div>
+
+
+		<div class="row">
+		</div>
+
+		<div class="row">
+		</div>
+
+	</div>
+</body>
+	
+	
+	
+<script type="text/javascript">
+
+
+
+function fill_audio_table(tbody_id, techniques, task, num_examples, audio_width){
+	for(var i = 1; i < num_examples + 1; i++){
+		var tr_string = '<tr>';
+		for(var j = 0; j < techniques.length; j++){
+			tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px"><source src="audio_examples/' + task + '/' + i + '-' + techniques[j] + '.wav" type="audio/wav">Your browser does not support the audio tag</audio></td>';
+		}
+		tr_string += "</tr>"
+		$("#" + tbody_id).append(tr_string)
+	}
+}
+
+function fill_text_table(tbody_id, techniques, transcripts, task, num_examples, audio_width){
+	for(var i = 1; i < num_examples + 1; i++){
+		var tr_string = '<tr>';
+		tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px"><source src="audio_examples/' + task + '/' + i + '-' + techniques[0] + '.wav" type="audio/wav">Your browser does not support the audio tag</audio></td>';
+		tr_string += '<td>' + transcripts[i-1]  + '</td>';
+		for(var j = 1; j < techniques.length; j++){
+			tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px"><source src="audio_examples/' + task + '/' + i + '-' + techniques[j] + '.wav" type="audio/wav">Your browser does not support the audio tag</audio></td>';
+		}
+
+		tr_string += "</tr>"
+		$("#" + tbody_id).append(tr_string)
+	}
+}
+
+
+var num_imitations = 5;
+var imitation_techniques = ["benign", "C&W AE", "Down-Up", "LPC", "Quant", "ANR", "SNR", "Ours"];
+fill_audio_table("imitation_tbody", imitation_techniques, "imitation", num_imitations, 130);
+
+
+var num_st = 5;
+var st_techniques = ["style", "speaker", "zeroshot", "whole", "decoder", "nopitch"];
+fill_audio_table("style_trasnfer_tbody", st_techniques, "style_transfer", num_st, 180);
+
+
+var transcripts = [
+	"I lost my head.",
+	"I lost my head.",
+	"Jim was down there with his wife.",
+	"Jim was down there with his wife."
+	// "transcript3",
+	// "transcript4",
+	// "transcript5",
+
+]
+
+var text_techniques = ["speaker", "zeroshot", "whole", "decoder", "nopitch"];
+fill_text_table("text_tbody", text_techniques, transcripts, "text", transcripts.length, 180);
+
+
+
+</script>	
+
+
+</html>
+
