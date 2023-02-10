@@ -25,21 +25,22 @@
 		<h1>WAVEPURIFIER: Purify the Audio Adversarial Examples Using Hierarchical Diffusion Models </h1>
 		<div style="border: 1px solid black; margin-top: 20px; margin-bottom: 10px;"></div>
 		<p>We present audio examples for our purification output in three attacks. We compare the result with existing defense methods, and present the transcriptions on ASR (Aotomated Speech Recognition) models.
+			For Every audio, <b>we provide the targeted ASR results below the audio</b>. 
 			
 		<div style="border-top: 1px solid grey;"></div>
 		<div class="row">
 			<center>
 			<h3>C&W Attack</h3>
 			</center>
-			<p>ASR model: DeepSpeech 0.4.1</p>
+			<p>ASR model: DeepSpeech 0.4.1-<a href="https://github.com/carlini/audio_adversarial_examples">Model Description</a></p>
 			<table class="table" style="margin-top: 20px;">
 				<thead>
 					<tr>
 						<th>Benign</th>
 						<th>C&W AE</th>
-						<th>Down-Up</th>
-						<th>LPC</th>
-						<th>Quant</th>
+						<th>Down-Up 2k</th>
+						<th>LPC-10</th>
+						<th>Quant-8</th>
 						<th>ANR</th>
 						<th>SNR</th>
 						<th>Ours</th>
@@ -55,21 +56,23 @@
 		<div style="border-top: 1px solid grey;"></div>
 		<div class="row">
 			<center>
-			<h3>Style Transfer Task</h3>
+			<h3>QIN-I Attack</h3>
 			</center>
-			<p>The goal of this task is to transfer the pitch and rhythm from some expressive speech to the cloned speech for the target speaker. For this task, we use examples from the single speaker Blizzard 2013 dataset as style references. This dataset contains expressive audio book readings from a single speaker with high variation in emotion and pitch. For our proposed model, we use this <i>style reference audio</i> to extract the pitch and rhythm. In-order to retain speaker-specific latent style aspects, we use <i>target speaker samples</i> to extract the GST embedding. For the Tacotron2 + GST model, which does not have explicit pitch conditioning, we use the <i>style reference audio</i> for obtaining the GST embedding and the rhythm.</p>
+			<p>ASR model: LingVo ASR-<a href="https://github.com/cleverhans-lab/cleverhans/tree/master/cleverhans_v3.1.0/examples/adversarial_asr">Model Description</a></p>
 			<table class="table" style="margin-top: 20px;">
 				<thead>
 					<tr>
-						<th>Style Reference Audio</th>
-						<th>Target Speaker Audio</th>
-						<th>Proposed Model: Zero-shot</th>
-						<th>Proposed Model: Adaptation Whole</th>
-						<th>Proposed Model: Adaptation Decoder</th>
-						<th>Proposed Model: Tacotron2 + GST - Zero-shot (baseline)</th>
+						<th>Benign</th>
+						<th>QIN-I AE</th>
+						<th>Down-Up 2k</th>
+						<th>LPC-10</th>
+						<th>Quant-8</th>
+						<th>ANR</th>
+						<th>SNR</th>
+						<th>Ours</th>
 					</tr>
 				</thead>
-				<tbody id = "style_trasnfer_tbody" >
+				<tbody id = "qin_tbody" >
 					
 				</tbody>
 			</table>
@@ -80,21 +83,23 @@
 
 		<div class="row">
 			<center>
-			<h3>Text Task</h3>
+			<h3>SpecPatch Attack</h3>
 			</center>
-			<p>For cloning speech directly from text, we first synthesize speech for the given text using a single speaker TTS model - Tacotron 2 + WaveGlow. We then derive the pitch contour of the synthetic speech using the Yin algorithm and scale the pitch contour linearly to have the same mean pitch as that of the. For deriving rhythm, we use our proposed synthesis model as a forced aligner between the text and Tacotron2-synthesized speech. We use the <i>target speaker samples</i> for obtaining the GST embedding for both our proposed model and the baseline Tacotron2 + GST model.</p>
+			<p>ASR model: DeepSpeech 0.4.1-<a href="https://github.com/carlini/audio_adversarial_examples">Model Description</a></p>
 			<table class="table" style="margin-top: 20px;">
 				<thead>
 					<tr>
-						<th>Target Speaker Audio</th>
-						<th>Proposed Model: Zero-shot</th>
-						<th>Proposed Model: Adaptation Whole</th>
-						<th>Proposed Model: Adaptation Decoder</th>
-						<th>Proposed Model: Tacotron2 + GST - Zero-shot (baseline)</th>
-
+						<th>Benign</th>
+						<th>SpecPatch AE</th>
+						<th>Down-Up 2k</th>
+						<th>LPC-10</th>
+						<th>Quant-8</th>
+						<th>ANR</th>
+						<th>SNR</th>
+						<th>Ours</th>
 					</tr>
 				</thead>
-				<tbody id = "text_tbody" >
+				<tbody id = "sp_tbody" >
 					
 				</tbody>
 			</table>
@@ -129,21 +134,26 @@ function fill_audio_table(tbody_id, techniques, task, num_examples, audio_width)
 }
 
 function fill_text_table(tbody_id, techniques, transcripts, task, num_examples, audio_width){
-	for(var i = 1; i < num_examples + 1; i++){
+	for(var i = 0; i < num_examples; i++){
 		if (i%2 == 0) { 
 		var tr_string = '<tr>';
-		tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px"><source src="audio_examples/' + task + '/' + i + '-' + techniques[0] + '.wav" type="audio/wav">Your browser does not support the audio tag</audio></td>';
+		//tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px"><source src="audio_examples/' + task + '/' + i + '-' + techniques[0] + '.wav" type="audio/wav">Your browser does not support the audio tag</audio></td>';
 		//tr_string += '<td>' + transcripts[i-1]  + '</td>';
-		for(var j = 1; j < techniques.length; j++){
-			tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px"><source src="audio_examples/' + task + '/' + i + '-' + techniques[j] + '.wav" type="audio/wav">Your browser does not support the audio tag</audio></td>';
+		for(var j = 1; j < techniques.length+1; j++){
+			var row = (i)/2+1;
+			console.log(row + '-' + techniques[j-1]);
+			tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px"><source src="audio_examples/' + task + '/' + row + '-' + techniques[j-1] + '.wav" type="audio/wav">Your browser does not support the audio tag</audio></td>';
 		}
 		tr_string += "</tr>"
 		$("#" + tbody_id).append(tr_string)
 	}
 		else {
 			var tr_string = '<tr>';
-		for(var j = 1; j < techniques.length; j++){
-			tr_string += '<td>' + transcripts[techniques[i-1],j]  + '</td>';
+		for(var j = 1; j < techniques.length+1; j++){
+			// var text =  transcripts[0][0];
+			var row = (i+1)/2;
+			console.log(i, row);
+			tr_string += '<td>' + transcripts[row-1][j-1]  + '</td>';
 		}
 		tr_string += "</tr>"
 		$("#" + tbody_id).append(tr_string)
@@ -153,47 +163,42 @@ function fill_text_table(tbody_id, techniques, transcripts, task, num_examples, 
 }
 
 
-var num_samples = 5;
-let cw_trans = {};
+var num_samples = 10;
 let tech = ["benign", "AE", "Down-Up", "LPC", "Quant", "ANR", "SNR", "Ours"];
 
-for (let te of tech) {
-    cw_trans[te] = [];
-}
-
-const fs = require('fs');
-fs.readFile("audio_examples/CW/trans", 'utf-8', function(err, data) {
-    if (err) throw err;
-
-    let lines = data.split('\n');
-    for (let line of lines) {
-        let types = line.split("-")[1].trim();
-        let trans = line.split(":").pop().trim();
-        cw_trans[te].push(trans);
-    }
-});
+var cw_trans = 
+[["play some music", "call my mom","h on mogl","he sud misic","plal some music","plac some music","lasa isac","play somusice"],
+["play some music", "cancel my alarm"," o mol","is sic","play som music","placsome music","playaac","playe so music"],
+["play some music", "tell me the password","ol","e sud meslyc","tl some ne sor"," play some yeser","lac otinsec","play some usic"],
+["play some music", "go to the police"," on mogle","he sud esic","e so thensic","ac some music","play usic","place some music"],
+["play some music", "turn off the bluetooth"," wh on mogal","from sudn usic","in of the blusith","fan some music","e sa music","play some music"]]
 
 fill_text_table("cw_tbody", tech, cw_trans, "CW", num_samples, 130);
 
 
-var num_st = 5;
-var st_techniques = ["style", "speaker", "zeroshot", "whole", "decoder", "nopitch"];
-fill_audio_table("style_trasnfer_tbody", st_techniques, "style_transfer", num_st, 180);
+var num_samples = 10;
+let tech_qin = ["benign", "AE", "Down-Up", "LPC", "Quant", "ANR", "SNR", "Ours"];
 
+var qin_trans = 
+[["to many experts this trend was inevitable", "call my mom","grimaud or poor horrible the lovable","when he experts this trend was inevitable","to many experts this tran was inevitable","to many experts this tran was inevitable","to many experts this was heaven","to many experts this tread was inevitable"],
+["to many experts this trend was inevitable", "cancel my alarm","grimaud or poor horrible the lovable","when he experts this trend was inevitable","to many experts this trend was inevitable","to many experts this tran was inevitablec","to many experts this was heaven","to many experts this tread was inevitable"],
+["to many experts this trend was inevitable", "tell me the password","koumauakov who powerful the lovable","from six months this train was inevitable","to many expert this tran was inevitable","to many experts this tran was inevitable","to many experts this was applicable","to many experts this friend was inevitable"],
+["to many experts this trend was inevitable", "go to the police","glorical or powerful the love of all","from whom hexburnts this tran was inevitable","to many exb this tran was inevitable","to many experts this trait was inevitable","to many experts this problem","to many experts this tread was inevitable"],
+["to many experts this trend was inevitable", "turn off the bluetooth","the voloogul who called all the world of the hall","his parents the strength was inevitable","to many experts this trend was ivitable","to many experts this trait was hippo","many experts this was hippon","to many experts this tread was inevitable"]]
 
-var transcripts = [
-	"I lost my head.",
-	"I lost my head.",
-	"Jim was down there with his wife.",
-	"Jim was down there with his wife."
-	// "transcript3",
-	// "transcript4",
-	// "transcript5",
+fill_text_table("qin_tbody", tech_qin, qin_trans, "QIN", num_samples, 130);
 
-]
+var num_samples = 10;
+let sp_qin = ["benign", "AE", "Down-Up", "LPC", "Quant", "ANR", "SNR", "Ours"];
 
-var text_techniques = ["speaker", "zeroshot", "whole", "decoder", "nopitch"];
-fill_text_table("text_tbody", text_techniques, transcripts, "text", transcripts.length, 180);
+var sp_trans = 
+[["jane may earn more money by working hard", "call my mom","call more al more morabole all"," er wor but eb wor ita on","call ma er more money by workhing hard","mr more money by workings mar","i werk i fon","aed ma earn more money by work you hard"],
+["jane may earn more money by working hard", "cancel my alarm","call more al more morabole all"," er wor butebl work ito on","canbac r more money by workhing a hard","mony by workis far","i were ty pan","cai te eran more money by worth you  hard"],
+["jane may earn more money by working hard", "tell me the password","call more al more morabole all"," wor but o wat he a ond","tell ma er or money by working hard","r more money by workins pard","i work is fon","thenly make earn more money by woring hard"],
+["jane may earn more money by working hard", "go to the police","call more al more morabole all"," wor but o wan he a ond","g mor money by working  hard","r more money by workins pard","i werk te fon","te ta earn more money by working hard"],
+["jane may earn more money by working hard", "turn off the bluetooth","call more al more morable hall","t beer wore buteble wor in o on","t m er ore money by work ing  hard","s ta erm ore money by workis hart","i work y fon","te ay may earn more money by working hard"]]
+
+fill_text_table("sp_tbody", sp_qin, sp_trans, "SP", num_samples, 130);
 
 
 
