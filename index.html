@@ -45,7 +45,7 @@
 						<th>Ours</th>
 					</tr>
 				</thead>
-				<tbody id = "imitation_tbody" >
+				<tbody id = "cw_tbody" >
 					
 				</tbody>
 			</table>
@@ -87,7 +87,6 @@
 				<thead>
 					<tr>
 						<th>Target Speaker Audio</th>
-						<th>Text</th>
 						<th>Proposed Model: Zero-shot</th>
 						<th>Proposed Model: Adaptation Whole</th>
 						<th>Proposed Model: Adaptation Decoder</th>
@@ -131,22 +130,50 @@ function fill_audio_table(tbody_id, techniques, task, num_examples, audio_width)
 
 function fill_text_table(tbody_id, techniques, transcripts, task, num_examples, audio_width){
 	for(var i = 1; i < num_examples + 1; i++){
+		if (i%2 == 0) { 
 		var tr_string = '<tr>';
 		tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px"><source src="audio_examples/' + task + '/' + i + '-' + techniques[0] + '.wav" type="audio/wav">Your browser does not support the audio tag</audio></td>';
-		tr_string += '<td>' + transcripts[i-1]  + '</td>';
+		//tr_string += '<td>' + transcripts[i-1]  + '</td>';
 		for(var j = 1; j < techniques.length; j++){
 			tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px"><source src="audio_examples/' + task + '/' + i + '-' + techniques[j] + '.wav" type="audio/wav">Your browser does not support the audio tag</audio></td>';
 		}
-
 		tr_string += "</tr>"
 		$("#" + tbody_id).append(tr_string)
+	}
+		else {
+			var tr_string = '<tr>';
+		for(var j = 1; j < techniques.length; j++){
+			tr_string += '<td>' + transcripts[techniques[i-1],j]  + '</td>';
+		}
+		tr_string += "</tr>"
+		$("#" + tbody_id).append(tr_string)
+	}
+		
 	}
 }
 
 
-var num_imitations = 5;
-var imitation_techniques = ["benign", "C&W AE", "Down-Up", "LPC", "Quant", "ANR", "SNR", "Ours"];
-fill_audio_table("imitation_tbody", imitation_techniques, "imitation", num_imitations, 130);
+var num_samples = 5;
+let cw_trans = {};
+let tech = ["benign", "AE", "Down-Up", "LPC", "Quant", "ANR", "SNR", "Ours"];
+
+for (let te of tech) {
+    cw_trans[te] = [];
+}
+
+const fs = require('fs');
+fs.readFile("./CW/trans", 'utf-8', function(err, data) {
+    if (err) throw err;
+
+    let lines = data.split('\n');
+    for (let line of lines) {
+        let types = line.split("-")[1].trim();
+        let trans = line.split(":").pop().trim();
+        cw_trans[te].push(trans);
+    }
+});
+
+fill_text_table("cw_tbody", tech, cw_trans, "CW", num_samples, 130);
 
 
 var num_st = 5;
