@@ -16,7 +16,11 @@
 <body>
 
 	
-	
+	<style>
+		#list-div {
+		  text-align: left;
+		}
+	  </style>
 	
 
 
@@ -26,11 +30,24 @@
 		<div style="border: 1px solid black; margin-top: 20px; margin-bottom: 10px;"></div>
 		<p>We present audio examples for our purification output in three attacks. We compare the result with existing defense methods, and present the transcriptions on ASR (Aotomated Speech Recognition) models.
 			For Every audio, <b>we provide the targeted ASR results below the audio</b>. 
-			
+
+			<div id="list-div">
+				<ul>
+				  <li><b>Benign:</b> The benign audio.</li>
+				  <li><b>XX AE:</b> The AE crafted by different audio adversarial attacks.</li>
+				  <li><b>Down-Up 2k:</b> Make a downsampling and upsampling to 2kHz to defend the AE. Proposed by <a href="https://www.usenix.org/system/files/sec21-hussain.pdf">USENIX 2021: WaveGuard</a></li>
+				  <li><b>LPC 10:</b> Use Linear Predictive Coding with 10th oreder filter to defend the AE. Proposed by <a href="https://www.usenix.org/system/files/sec21-hussain.pdf">USENIX 2021: WaveGuard</a></li>
+				  <li><b>Quant 8:</b> Quantilize the audio samples in 8 bits and then reconstruct back to defend the AE. Proposed by <a href="https://www.usenix.org/system/files/sec21-hussain.pdf">USENIX 2021: WaveGuard</a></li>
+				  <li><b>ANR:</b> Use adaptive noise reduction to defend the AE. Proposed by <a href="https://pypi.org/project/noisereduce/">PLoS computational biology</a></li>
+				  <li><b>SNR:</b> Use stationary noise reduction to defend the AE. Proposed by <a href="https://pypi.org/project/noisereduce/">PLoS computational biology</a></li>
+				  <li><b>Ours:</b> Use our <b>WAVEPURIFIER</b> to defend the AE.</li>
+				</ul>
+			  </div>
+					
 		<div style="border-top: 1px solid grey;"></div>
 		<div class="row">
 			<center>
-			<h3>C&W Attack</h3>
+			<h3>C&W Attack - <a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8424625">S&P Workshop 2018</a></h3>
 			</center>
 			<p>ASR model: DeepSpeech 0.4.1-<a href="https://github.com/carlini/audio_adversarial_examples">Model Description</a></p>
 			<table class="table" style="margin-top: 20px;">
@@ -56,7 +73,7 @@
 		<div style="border-top: 1px solid grey;"></div>
 		<div class="row">
 			<center>
-			<h3>QIN-I Attack</h3>
+			<h3>QIN-I Attack - <a href="http://proceedings.mlr.press/v97/qin19a/qin19a.pdf">PMLR 2019</a>/h3>
 			</center>
 			<p>ASR model: LingVo ASR-<a href="https://github.com/cleverhans-lab/cleverhans/tree/master/cleverhans_v3.1.0/examples/adversarial_asr">Model Description</a></p>
 			<table class="table" style="margin-top: 20px;">
@@ -83,7 +100,7 @@
 
 		<div class="row">
 			<center>
-			<h3>SpecPatch Attack</h3>
+			<h3>SpecPatch Attack - <a href="https://dl.acm.org/doi/pdf/10.1145/3548606.3560660">CCS 2022</a></h3>
 			</center>
 			<p>ASR model: DeepSpeech 0.4.1-<a href="https://github.com/carlini/audio_adversarial_examples">Model Description</a></p>
 			<table class="table" style="margin-top: 20px;">
