@@ -40,6 +40,8 @@
 				  <li><b>Quant 8:</b> Quantilize the audio samples in 8 bits and then reconstruct back to defend the AE. Proposed by <a href="https://www.usenix.org/system/files/sec21-hussain.pdf">USENIX 2021: WaveGuard</a></li>
 				  <li><b>ANR:</b> Use adaptive noise reduction to defend the AE. Proposed by <a href="https://pypi.org/project/noisereduce/">PLoS computational biology</a></li>
 				  <li><b>SNR:</b> Use stationary noise reduction to defend the AE. Proposed by <a href="https://pypi.org/project/noisereduce/">PLoS computational biology</a></li>
+				  <li><b>DiffSpec:</b> Use Mel-spectrogram based diffusion model to purify AE. Proposed by <a href="https://arxiv.org/pdf/2303.01507.pdf">ICLR 2023: AudioPure</a></li>
+				  <li><b>DiffWave:</b> Use waveform based diffusion model to purify AE. Proposed by <a href="https://arxiv.org/pdf/2303.01507.pdf">ICLR 2023: AudioPure</a></li>
 				  <li><b>Ours:</b> Use our <b>WAVEPURIFIER</b> to defend the AE.</li>
 				</ul>
 			  </div>
@@ -60,6 +62,8 @@
 						<th>Quant-8</th>
 						<th>ANR</th>
 						<th>SNR</th>
+						<th>DiffSpec</th>
+						<th>DiffWave</th>
 						<th>Ours</th>
 					</tr>
 				</thead>
@@ -181,14 +185,14 @@ function fill_text_table(tbody_id, techniques, transcripts, task, num_examples, 
 
 
 var num_samples = 10;
-let tech = ["benign", "AE", "Down-Up", "LPC", "Quant", "ANR", "SNR", "Ours"];
+let tech = ["benign", "AE", "Down-Up", "LPC", "Quant", "ANR", "SNR", "DiffSpec", "DiffWave", "Ours"];
 
 var cw_trans = 
-[["play some music", "call my mom","h on mogl","he sud misic","plal some music","plac some music","lasa isac","play somusice"],
-["play some music", "cancel my alarm"," o mol","is sic","play som music","placsome music","playaac","playe so music"],
-["play some music", "tell me the password","ol","e sud meslyc","tl some ne sor"," play some yeser","lac otinsec","play some usic"],
-["play some music", "go to the police"," on mogle","he sud esic","e so thensic","ac some music","play usic","place some music"],
-["play some music", "turn off the bluetooth"," wh on mogal","from sudn usic","in of the blusith","fan some music","e sa music","play some music"]]
+[["play some music", "call my mom","h on mogl","he sud misic","plal some music","plac some music","lasa isac", "place of music", "x", "play somusice"],
+["play some music", "cancel my alarm"," o mol","is sic","play som music","placsome music","playaac","place so music", "x", "playe so music"],
+["play some music", "tell me the password","ol","e sud meslyc","tl some ne sor"," play some yeser","lac otinsec", "play some usic", "x", "play some usic"],
+["play some music", "go to the police"," on mogle","he sud esic","e so thensic","ac some music","play usic"," som newsice", "x", "place some music"],
+["play some music", "turn off the bluetooth"," wh on mogal","from sudn usic","in of the blusith","fan some music","e sa music","fe of musich", "x", "play some music"]]
 
 fill_text_table("cw_tbody", tech, cw_trans, "CW", num_samples, 130);
 
