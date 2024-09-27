@@ -1,0 +1,35 @@
+Command: --in /data/ctc_attack/bk_test/*.wav --bk source_audio/close_wd_curtains.wav --target open the door window and the curtains --out out.wav --imp impulse2/x12y12-16k.wav --name 2-4k --lr 20 --iterations 1000 --restore_path DeepSpeech/deepspeech-0.4.1-checkpoint/model.v0.4.1Target  open the door window and the curtains
+Step  0: clohed the window an the curtains
+Step  50: mosh ge window and the curtains
+Step  100: awth go window and the curtains
+Step  150: manth go window and the curtains
+Step  200: wan th goo window an the curtains
+Step  250: man th goo window an the curtains
+Step  300: man th dor window and the curtains
+Step  350: men th goo window and the curtains
+Step  400: man th goo window and the curtains
+Step  450: manith go window and the curtains
+Command: --in /data/ctc_attack/bk_test/*.wav --bk source_audio/close_wd_curtains.wav --target open the door window and the curtains --out out.wav --imp impulse2/x12y12-16k.wav --name 2-4k --lr 20 --iterations 1000 --restore_path DeepSpeech/deepspeech-0.4.1-checkpoint/model.v0.4.1Target  open the door window and the curtains
+Step  0: closed the window and the curtains
+Command: --in /data/ctc_attack/bk_test/*.wav --bk source_audio/close_wd_curtains.wav --target open the door window and the curtains --out out.wav --imp impulse2/x12y12-16k.wav --name 2-4k --lr 20 --iterations 1000 --restore_path DeepSpeech/deepspeech-0.4.1-checkpoint/model.v0.4.1Target  open the door window and the curtains
+Step  0: closed the window and the curtains
+Step  50:  on the do window and the curtains
+Step  100: oon the do window and the curtains
+Step  150: on the do window and the curtains
+Step  200: on the dor window and the curtains
+Step  250: pon the dor window and the curtains
+Step  300: on the dor window and the curtains
+Step  350: pen the door window and the curtains
+Step  400: en the door window and the curtains
+Step  450: en the dor window and the curtains
+Step  500: pen the dor window and the curtains
+Step  550: en the dor window and the curtains
+Step  600: pen the door window and the curtains
+Step  650: pen the door window and the curtains
+Step  700: pen the dor window and the curtains
+Step  750: pen the door window and the curtains
+Step  800: pen the door window and the curtains
+Step  850: pen the door window and the curtains
+Step  900: pen the door window and the curtains
+Step  950: pen the door window and the curtains
+Step  1000: open the door window and the curtains
